@@ -27,8 +27,9 @@ PYTHON_VERSION ?= $(REZ_PYTHON_VERSION)
 CMAKE_ARGS := -DCMAKE_INSTALL_PREFIX=$(PREFIX) \
 	-DCMAKE_BUILD_TYPE=$(BUILD_TYPE) \
 	-DCMAKE_SKIP_RPATH=ON \
-	-DCMAKE_CXX_STANDARD=17 \
+	-DUSE_PYTHON=ON \
 	-DPYTHON_VERSION=$(PYTHON_VERSION) \
+	-DCMAKE_CXX_STANDARD=17 \
 	-DOIIO_BUILD_TESTS=FALSE
 
 # Warn about building master if no tag is provided
@@ -51,7 +52,7 @@ $(SOURCE_DIR): | $(BUILD_DIR) # Clone the repository
 # Build
 build: $(SOURCE_DIR) # Checkout the correct tag and build
 	echo CMAKE_BUILD_TYPE=$(BUILD_TYPE)
-	cd $(SOURCE_DIR) && git fetch && git checkout $(TAG) 
+	cd $(SOURCE_DIR) && git fetch --all && git checkout $(TAG)
 	cd $(BUILD_DIR) && cmake $(CMAKE_ARGS) $(SOURCE_DIR) && make
 
 

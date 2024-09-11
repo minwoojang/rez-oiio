@@ -1,6 +1,6 @@
 name = "oiio"
 
-version = "2.5.7.0"
+version = "2.5.15.0"
 
 private_build_requires = [
     "pybind11-2"
@@ -8,8 +8,8 @@ private_build_requires = [
 
 requires = [
     "boost-1.82",
-    "openexr-3.1",
-    "ocio-2.1",
+    "openexr-3.2",
+    "ocio-2.3",
     "jpegturbo-2",
     "libpng-1",
     "libraw-0.21",
@@ -53,8 +53,9 @@ build_requires = [
 ]
 
 variants = [
-    ["platform-linux", "python-3.9"],
     ["platform-linux", "python-3.10"],
+    ["platform-linux", "python-3.11"],
+
 ]
 
 build_command = "make -f {root}/Makefile {install}"
@@ -67,3 +68,16 @@ def commands():
     )
     if building:
         env.OpenImageIO_ROOT = "{root}" # CMake Hint
+
+tests = {
+    "python": {
+        "command": """
+        python -c "import OpenImageIO as oiio; assert oiio.VERSION_STRING == '{version}'"
+        """,
+        "run_on": [
+            "pre_install",
+            "pre_release",
+        ],
+        "on_variants": True
+    },
+}

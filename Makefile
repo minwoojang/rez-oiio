@@ -2,11 +2,11 @@ SHELL := /bin/bash
 
 # Rez variables, setting these to sensible values if we are not building from rez
 REZ_BUILD_PROJECT_VERSION ?= NOT_SET
-REZ_BUILD_INSTALL_PATH ?= /usr/local
+REZ_BUILD_INSTALL_PATH ?= /home/minwoo/packages/oiio
 REZ_BUILD_SOURCE_PATH ?= $(shell dirname $(lastword $(abspath $(MAKEFILE_LIST))))
 BUILD_ROOT := $(REZ_BUILD_SOURCE_PATH)/build
 REZ_BUILD_PATH ?= $(BUILD_ROOT)
-REZ_PYTHON_VERSION ?= 3
+REZ_PYTHON_VERSION ?= 3.7.7
 
 # Build time locations
 SOURCE_DIR := $(BUILD_ROOT)/oiio/
@@ -15,7 +15,7 @@ BUILD_DIR = ${REZ_BUILD_PATH}/BUILD/$(BUILD_TYPE)
 
 # Source
 REPOSITORY_URL := https://github.com/OpenImageIO/oiio.git
-TAG ?= v$(REZ_BUILD_PROJECT_VERSION)
+TAG ?= v2.5.15.0
 
 # Installation prefix
 PREFIX ?= ${REZ_BUILD_INSTALL_PATH}
@@ -30,14 +30,15 @@ CMAKE_ARGS := -DCMAKE_INSTALL_PREFIX=$(PREFIX) \
 	-DUSE_PYTHON=ON \
 	-DPYTHON_VERSION=$(PYTHON_VERSION) \
 	-DCMAKE_CXX_STANDARD=17 \
-	-DOIIO_BUILD_TESTS=FALSE
+	-DOIIO_BUILD_TESTS=FALSE \
+	# -DPNG_INCLUDE_DIR=/cocoa/inhouse/tool/rez-packages/png/1.6.44/platform-linux/arch-x86_64/include \
+	# -DPNG_LIBRARY=/cocoa/inhouse/tool/rez-packages/png/1.6.44/platform-linux/arch-x86_64/lib64/
 
 # Warn about building master if no tag is provided
 ifeq "$(TAG)" "vNOT_SET"
 $(warning "No tag was specified, main will be built. You can specify a tag: TAG=v2.1.0")
 TAG:=master
 endif
-
 
 .PHONY: build install test clean
 .DEFAULT: build
@@ -51,13 +52,11 @@ $(SOURCE_DIR): | $(BUILD_DIR) # Clone the repository
 
 # Build
 build: $(SOURCE_DIR) # Checkout the correct tag and build
-	echo CMAKE_BUILD_TYPE=$(BUILD_TYPE)
 	cd $(SOURCE_DIR) && git fetch --all && git checkout $(TAG)
 	cd $(BUILD_DIR) && cmake $(CMAKE_ARGS) $(SOURCE_DIR) && make
 
-
 install: build
-	mkdir -p $(PREFIX)
+	mkdir -p $(REZ_BUILD_INSTALL_PATH)
 	cd $(BUILD_DIR) && make install
 
 test: build # Run the tests in the build

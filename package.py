@@ -7,25 +7,25 @@ private_build_requires = [
 ]
 
 requires = [
-    "boost-1.82",
-    "openexr-3.2",
-    "ocio-2.3",
-    "jpegturbo-2",
-    "libpng-1",
-    "libraw-0.21",
-    "ffmpeg-5.1",
-    "tbb-2020"
+    "boost",
+    "openexr",
+    "ocio",
+    "jpeg",
+    "png",
+    # "libraw-0.21",
+    "ffmpeg",
+    "tbb"
 ]
 
 def pre_build_commands():
-    env.Boost_ROOT = env.BOOST_ROOT
-    env.Python_ROOT = env.PYTHON_ROOT
-    env.Ffmpeg_ROOT = env.FFMPEG_ROOT
+    env.Boost_ROOT = "/cocoa/inhouse/tool/rez-packages/boost/1.86.0/platform-linux/arch-x86_64"
+    env.Python_ROOT = "/cocoa/inhouse/tool/rez-packages/python/3.7.7/platform-linux/arch-x86_64"
+    env.Ffmpeg_ROOT = "/cocoa/inhouse/tool/rez-packages/ffmpeg/4.2.1/platform-linux/arch-x86_64"
     unsetenv("BOOST_ROOT")
     unsetenv("PYTHON_ROOT")
     unsetenv("FFMPEG_ROOT")
     unsetenv("PYBIND11_ROOT")
-    env.CMAKE_PREFIX_PATH.append(env.REZ_JPEGTURBO_ROOT)
+    env.CMAKE_PREFIX_PATH.append("/cocoa/inhouse/tool/rez-packages/jpeg/3.0.4/platform-linux/arch-x86_64")
     #setenv("libjpeg-turbo", env.REZ_JPEGTURBO_ROOT)
 
     # We explicitly disable some dependencies as we
@@ -48,13 +48,12 @@ def pre_build_commands():
 
 
 build_requires = [
-    "cmake-3.15+<4",
-    "gcctoolset-9",
+    "cmake-3",
+    # "gcctoolset-9",
 ]
 
 variants = [
-    ["platform-linux", "python-3.10"],
-    ["platform-linux", "python-3.11"],
+    ["platform-linux","arch-x86_64", "python-3.7.7"],
 
 ]
 

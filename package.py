@@ -9,17 +9,18 @@ private_build_requires = [
 requires = [
     "boost",
     "openexr",
-    "ocio",
+    "ocio-2.3",
     "jpeg",
     "png",
-    # "libraw-0.21",
+    "libraw",
     "ffmpeg",
-    "tbb"
+    "tbb",
+    # "gcc-6"
 ]
 
 def pre_build_commands():
     env.Boost_ROOT = "/cocoa/inhouse/tool/rez-packages/boost/1.86.0/platform-linux/arch-x86_64"
-    env.Python_ROOT = "/cocoa/inhouse/tool/rez-packages/python/3.7.7/platform-linux/arch-x86_64"
+    env.Python_ROOT = "/cocoa/inhouse/tool/rez-packages/python/3.9.16/platform-linux/arch-x86_64"
     env.Ffmpeg_ROOT = "/cocoa/inhouse/tool/rez-packages/ffmpeg/4.2.1/platform-linux/arch-x86_64"
     unsetenv("BOOST_ROOT")
     unsetenv("PYTHON_ROOT")
@@ -53,7 +54,7 @@ build_requires = [
 ]
 
 variants = [
-    ["platform-linux","arch-x86_64", "python-3.7.7"],
+    ["platform-linux","arch-x86_64", "python-3.9.16"],
 
 ]
 

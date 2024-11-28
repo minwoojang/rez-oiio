@@ -6,7 +6,7 @@ REZ_BUILD_INSTALL_PATH ?= /home/minwoo/packages/oiio
 REZ_BUILD_SOURCE_PATH ?= $(shell dirname $(lastword $(abspath $(MAKEFILE_LIST))))
 BUILD_ROOT := $(REZ_BUILD_SOURCE_PATH)/build
 REZ_BUILD_PATH ?= $(BUILD_ROOT)
-REZ_PYTHON_VERSION ?= 3.7.7
+REZ_PYTHON_VERSION ?= 3.9.16
 
 # Build time locations
 SOURCE_DIR := $(BUILD_ROOT)/oiio/
